@@ -27,4 +27,4 @@ jobs:
           pip install -r requirements.txt
       - name: Execute the script
         run: |
-          python weekly_update.py
+          python weekly_update.py ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }}
