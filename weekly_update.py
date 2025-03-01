@@ -15,8 +15,11 @@ def main(token, defalut_repository):
     for repository in repositories:
         print(repositories[repository]['address'])
         address = repositories[repository]['address']
-        output_json = subprocess.run(f"gh release list --repo {address}, --json createdAt,tagName", capture_output=True, text=True).stdout
-        print(output_json)
+        # リリース情報を取得
+        output_json = subprocess.run(f"gh release list --repo {address} --json createdAt,tagName", capture_output=True, text=True).stdout
+        output = json.loads(output_json)
+        print(output)
+        
         
 if __name__=="__main__":
     token = sys.argv[1]
