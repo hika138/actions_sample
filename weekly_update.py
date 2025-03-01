@@ -9,16 +9,14 @@ def main(token, defalut_repository):
     # 対象リポジトリを取得
     with open("repositories.json", "r") as json_file:
         repositories = json.load(json_file)
-        print(repositories)
     
-    # 対象リポジトリのリリース情報を取得
+    # 対象リポジトリのリリース情報を取得し、更新があればissueを作成
     for repository in repositories:
         print(repositories[repository]['address'])
         address = repositories[repository]['address']
         # リリース情報を取得
         output_json = subprocess.run(f"gh release list --repo {address} --json createdAt,tagName", capture_output=True, text=True).stdout
         output = json.loads(output_json)
-        print(output)
         
         
 if __name__=="__main__":
