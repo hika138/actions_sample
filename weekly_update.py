@@ -1,23 +1,35 @@
 import json
 import subprocess
 import sys
+import datetime
 
-def main(token, defalut_repository):
+def main(token, my_repository):
     # GitHubのトークンを設定
     subprocess.run(f"gh auth login --with-token {token}", shell=True)
     
     # 対象リポジトリを取得
     with open("repositories.json", "r") as json_file:
         repositories = json.load(json_file)
-    
-    # 対象リポジトリのリリース情報を取得し、更新があればissueを作成
+
+    # 対象リポジトリのリリース情報を取得し、更新があればissueを作成、更新
     for repository in repositories:
-        print(repositories[repository]['address'])
         address = repositories[repository]['address']
-        # リリース情報を取得
-        output_json = subprocess.run(f"gh release list --repo {address} --json createdAt,tagName", capture_output=True, text=True).stdout
-        output = json.loads(output_json)
+        output = []
         
+        # リリース情報を取得
+        release_json = subprocess.run(f"gh release list --repo {address} --json createdAt,tagName", capture_output=True, text=True).stdout
+        release = json.loads(release_json)
+        # 7日以内のリリース情報を取得
+        for i in range(len(release)):
+            if datetime.datetime.strptime(release[i]['createdAt'], '%Y-%m-%dT%H:%M:%SZ') > datetime.datetime.now() - datetime.timedelta(days=7):
+                  output.append(release[i]['tagName'])
+        if len(output) > 0:
+            # issueを作成
+            issue_title = f"{repository}: {(datetime.datetime.now() - datetime.timedelta(days=7)).strftime('%Y-%m-%d')} ~ {datetime.datetime.now().strftime('%Y-%m-%d')}のリリース情報"
+            issue_body = "以下のリリースがあります。<br>"
+            for i in range(len(output)):
+                issue_body += f"[{output[i]}](https://github.com/nuxt/nuxt/releases/tag/{output[i]})<br> "
+            subprocess.run(f'gh issue create --title "{issue_title}" --repo {my_repository} --body "{issue_body}"', shell=True)
         
 if __name__=="__main__":
     token = sys.argv[1]
