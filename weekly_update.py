@@ -40,7 +40,7 @@ def main(token, default_repository):
         print(e)
     
     finally:
-        pprint(f"{Path.cwd().iterdir()}")
+        subprocess.run("ls -la", shell=True)
         print("終了")
         
 if __name__=="__main__":
