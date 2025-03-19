@@ -1,7 +1,9 @@
 import json
+from pprint import pprint
 import subprocess
 import sys
 import datetime
+from pathlib import Path
 
 def main(token, default_repository):
     # GitHubのトークンを設定
@@ -38,6 +40,7 @@ def main(token, default_repository):
         print(e)
     
     finally:
+        pprint(f"{Path.iterdir()}")
         print("終了")
         
 if __name__=="__main__":
