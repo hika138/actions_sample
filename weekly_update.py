@@ -3,7 +3,7 @@ import subprocess
 import sys
 import datetime
 
-def main(token, my_repository):
+def main(token, default_repository):
     # GitHubのトークンを設定
     subprocess.run(f"gh auth login --with-token {token}", shell=True)
     
@@ -26,13 +26,15 @@ def main(token, my_repository):
         if len(output) > 0:
             # issueを作成
             issue_title = f"{repository}: {(datetime.datetime.now() - datetime.timedelta(days=7)).strftime('%Y-%m-%d')} ~ {datetime.datetime.now().strftime('%Y-%m-%d')}のリリース情報"
-            issue_body = "以下のリリースがあります。<br>"
-            for i in range(len(output)):
-                issue_body += f"[{output[i]}](https://github.com/nuxt/nuxt/releases/tag/{output[i]})<br> "
-            subprocess.run(f'gh issue create --title "{issue_title}" --repo {my_repository} --body "{issue_body}"', shell=True)
+            with open(f"{repository}.md", "w") as f:
+                f.write("以下のリリースがあります。\n")
+                for i in range(len(output)):
+                    f.write(f"[{output[i]}](https://github.com/nuxt/nuxt/releases/tag/{output[i]})\n")
+                
+            subprocess.run(f'cat {repository}.md | gh issue create --title "{issue_title}" --repo {default_repository} --body ', shell=True)
         
 if __name__=="__main__":
     token = sys.argv[1]
-    defalut_repository = sys.argv[2]
-    main(token=token, defalut_repository=defalut_repository)
+    default_repository = sys.argv[2]
+    main(token=token, default_repository=default_repository)
         
