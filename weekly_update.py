@@ -40,8 +40,7 @@ def main(token, default_repository):
         print(e)
     
     finally:
-        path_temp = Path(".")
-        pprint(f"{path_temp.iterdir()}")
+        pprint(f"{Path.cwd().iterdir()}")
         print("終了")
         
 if __name__=="__main__":
