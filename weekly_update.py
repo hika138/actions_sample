@@ -18,6 +18,7 @@ def main(token, default_repository):
         
         # リリース情報を取得
         release_json = subprocess.run(f"gh release list --repo {address} --json createdAt,tagName", capture_output=True, text=True).stdout
+        print(release_json)
         release = json.loads(release_json)
         # 7日以内のリリース情報を取得
         for i in range(len(release)):
