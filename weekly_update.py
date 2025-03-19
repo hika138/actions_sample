@@ -32,7 +32,7 @@ def main(token, default_repository):
                 for i in range(len(output)):
                     f.write(f"[{output[i]}](https://github.com/nuxt/nuxt/releases/tag/{output[i]})\n")
                 
-            subprocess.run(f'cat {repository}.md | gh issue create --title "{issue_title}" --repo {default_repository} --body ', shell=True)
+            subprocess.run(f'gh issue create --title "{issue_title}" --repo {default_repository} --body-file {repository}.md', shell=True)
         
 if __name__=="__main__":
     token = sys.argv[1]
