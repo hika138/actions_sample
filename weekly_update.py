@@ -3,7 +3,7 @@ import subprocess
 import sys
 import datetime
 
-def main(token, my_repository):
+def main(token, default_repository):
     # GitHubのトークンを設定
     subprocess.run(f"gh auth login --with-token {token}", shell=True)
     
@@ -29,9 +29,9 @@ def main(token, my_repository):
             issue_body = "以下のリリースがあります。<br>"
             for i in range(len(output)):
                 issue_body += f"[{output[i]}](https://github.com/{address}/releases/tag/{output[i]})<br> "
-            subprocess.run(f'gh issue create --title "{issue_title}" --repo {my_repository} --body "{issue_body}"', shell=True)
+            subprocess.run(f'gh issue create --title "{issue_title}" --repo {default_repository} --body "{issue_body}"', shell=True)
         
 if __name__=="__main__":
     token = sys.argv[1]
-    my_repository = sys.argv[2]
-    main(token=token, my_repository=my_repository)
+    defalut_repository = sys.argv[2]
+    main(token=token, defalut_repository=defalut_repository)
