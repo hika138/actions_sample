@@ -33,5 +33,5 @@ def main(token, default_repository):
         
 if __name__=="__main__":
     token = sys.argv[1]
-    defalut_repository = sys.argv[2]
-    main(token=token, defalut_repository=defalut_repository)
+    default_repository = sys.argv[2]
+    main(token=token, default_repository=default_repository)
