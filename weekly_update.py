@@ -28,11 +28,10 @@ def main(token, my_repository):
             issue_title = f"{repository}: {(datetime.datetime.now() - datetime.timedelta(days=7)).strftime('%Y-%m-%d')} ~ {datetime.datetime.now().strftime('%Y-%m-%d')}のリリース情報"
             issue_body = "以下のリリースがあります。<br>"
             for i in range(len(output)):
-                issue_body += f"[{output[i]}](https://github.com/nuxt/nuxt/releases/tag/{output[i]})<br> "
+                issue_body += f"[{output[i]}](https://github.com/{address}/releases/tag/{output[i]})<br> "
             subprocess.run(f'gh issue create --title "{issue_title}" --repo {my_repository} --body "{issue_body}"', shell=True)
         
 if __name__=="__main__":
     token = sys.argv[1]
-    defalut_repository = sys.argv[2]
-    main(token=token, defalut_repository=defalut_repository)
-        
+    my_repository = sys.argv[2]
+    main(token=token, my_repository=my_repository)
