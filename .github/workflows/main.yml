@@ -10,6 +10,7 @@ on:
 jobs:
   get_release_info:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GH_REPO: ${{ github.repository }}
@@ -17,13 +18,13 @@ jobs:
       issues: write
     
     steps:
+      - uses: actions/checkout@v2
       - name: set up python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: '3.12'
       - name: install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Execute the script
         run: |
